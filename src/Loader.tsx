@@ -7,8 +7,8 @@ export default function Loader({ progress, hiding }: { progress: number; hiding:
       }`}
     >
       <div className="fire">
-        <img src="images/fire.png" alt="" className="fire-img fb" />
-        <img src="images/fire.png" alt="" className="fire-img fa" />
+        <img src="videos/fire.svg" alt="" className="fire-img fb" />
+        <img src="videos/fire.svg" alt="" className="fire-img fa" />
         <span className="ember e1" />
         <span className="ember e2" />
         <span className="ember e3" />
