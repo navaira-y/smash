@@ -57,9 +57,7 @@ export default function Reserve() {
                 </button>
               </div>
             ) : (
-              <>
-                {/* date */}
-                <div>
+              <>                <div>
                   <p className="font-mono text-[10px] tracking-[0.3em] text-mut mb-4">01 · SELECT DATE</p>
                   <div className="border border-line bg-bg2 p-4">
                     <div className="flex items-center justify-between mb-3">
@@ -102,10 +100,7 @@ export default function Reserve() {
                     <span className="font-mono text-[11px] tracking-[0.25em] text-ink">{party} GUEST{party > 1 ? 'S' : ''}</span>
                     <button onClick={() => setParty((p) => Math.min(8, p + 1))} className="text-mut hover:text-gold text-lg px-2 transition-colors">+</button>
                   </div>
-                </div>
-
-                {/* time + details */}
-                <div>
+                </div>                <div>
                   <p className="font-mono text-[10px] tracking-[0.3em] text-mut mb-4">02 · SELECT TIME</p>
                   <p className="font-mono text-[8px] tracking-[0.3em] text-dim mb-2">LUNCH SERVICE</p>
                   <div className="grid grid-cols-4 gap-2">

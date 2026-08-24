@@ -36,9 +36,7 @@ export default function Build({
           <SectionHead index="02" title="BUILD YOUR SMASH" meta="STEP-BY-STEP · LIVE PRICING" />
         </Reveal>
 
-        <div className="grid lg:grid-cols-12 gap-8">
-          {/* ── left: selectors ── */}
-          <div className="lg:col-span-5 space-y-10">
+        <div className="grid lg:grid-cols-12 gap-8">          <div className="lg:col-span-5 space-y-10">
             <Reveal>
               <div className="flex items-center justify-between mb-4">
                 <span className="font-mono text-[10px] tracking-[0.3em] text-mut">STEP 1 · BUILD SELECTED</span>
@@ -101,8 +99,8 @@ export default function Build({
                           : 'border-line bg-panel hover:border-line2'
                       }`}
                     >
-                      <span className="w-14 h-10 shrink-0 bg-black/70 border border-line overflow-hidden grid place-items-center">
-                        <img src={t.icon} alt="" className="w-full h-full object-contain p-1" />
+                      <span className="w-14 h-10 shrink-0 bg-black/70 border border-line overflow-hidden">
+                        <img src={t.icon} alt="" className="w-full h-full object-cover" />
                       </span>
                       <span className="text-left">
                         <span className="block font-mono text-[9px] tracking-[0.15em] text-ink">{t.name}</span>
@@ -115,10 +113,7 @@ export default function Build({
                 })}
               </div>
             </Reveal>
-          </div>
-
-          {/* ── right: preview + receipt ── */}
-          <Reveal className="lg:col-span-7" delay={0.1}>
+          </div>          <Reveal className="lg:col-span-7" delay={0.1}>
             <div className="border border-line bg-panel h-full flex flex-col">
               <div data-preview-box className="relative h-[300px] md:h-[380px] overflow-hidden bg-black">
                 {flash && (

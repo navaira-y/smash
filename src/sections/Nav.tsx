@@ -34,9 +34,7 @@ export default function Nav() {
   };
 
   return (
-    <>
-      {/* progress hairline */}
-      <div className="fixed top-0 left-0 right-0 z-[70] h-[2px] bg-line/60">
+    <>      <div className="fixed top-0 left-0 right-0 z-[70] h-[2px] bg-line/60">
         <div ref={progRef} className="h-full w-full origin-left bg-gold" style={{ transform: 'scaleX(0)' }} />
       </div>
 
@@ -78,10 +76,7 @@ export default function Nav() {
             </span>
           </button>
         </div>
-      </header>
-
-      {/* fullscreen overlay menu */}
-      <div
+      </header>      <div
         ref={barRef}
         className={`fixed inset-0 z-[55] bg-bg/95 backdrop-blur-xl transition-all duration-500 ${
           open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'

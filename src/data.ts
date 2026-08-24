@@ -61,12 +61,12 @@ export interface Topping {
 }
 
 export const TOPPINGS: Topping[] = [
-  { name: 'SMASHED ONION', extra: 2, icon: 'images/icon-onionring.png' },
-  { name: 'SMOKED BACON', extra: 3, icon: 'images/icon-bacon.png' },
-  { name: 'EXTRA AMERICAN', extra: 2, icon: 'images/icon-cheese.png' },
-  { name: 'FRIED EGG', extra: 2, icon: 'images/icon-egg.png' },
-  { name: 'HOUSE PICKLES', extra: 0, icon: 'images/icon-jalapeno.png' },
-  { name: 'AVOCADO', extra: 2, icon: 'images/icon-avocado.png' },
+  { name: 'SMASHED ONION', extra: 2, icon: 'images/topping-onion.png' },
+  { name: 'SMOKED BACON', extra: 3, icon: 'images/topping-bacon.png' },
+  { name: 'EXTRA AMERICAN', extra: 2, icon: 'images/topping-cheese.png' },
+  { name: 'FRIED EGG', extra: 2, icon: 'images/topping-egg.png' },
+  { name: 'HOUSE PICKLES', extra: 0, icon: 'images/topping-pickles.png' },
+  { name: 'AVOCADO', extra: 2, icon: 'images/topping-avocado.png' },
 ];
 
 export const STATS = [

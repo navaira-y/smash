@@ -5,7 +5,6 @@ import type Lenis from 'lenis';
 
 gsap.registerPlugin(ScrollTrigger);
 
-/* ── smooth scroll singleton ─────────────────────────── */
 export let lenis: Lenis | null = null;
 export function setLenis(l: Lenis | null) {
   lenis = l;
@@ -15,7 +14,6 @@ export function scrollToId(id: string) {
   if (el && lenis) lenis.scrollTo(el, { offset: -52, duration: 1.4 });
 }
 
-/* ── fade/slide reveal on scroll ─────────────────────── */
 export function Reveal({
   children,
   className = '',
@@ -57,7 +55,6 @@ export function Reveal({
   );
 }
 
-/* ── section header: "// 01. THE LINE-UP"  + right meta ── */
 export function SectionHead({
   index,
   title,
@@ -113,7 +110,6 @@ export function SectionHead({
   );
 }
 
-/* ── glowing digital counter ─────────────────────────── */
 export function Digi({
   to,
   className = '',
@@ -146,7 +142,6 @@ export function Digi({
   return <span ref={ref} className={className} />;
 }
 
-/* ── animated price (tweens to target on change) ─────── */
 export function useTweenNumber(target: number) {
   const ref = useRef<HTMLSpanElement>(null);
   useEffect(() => {
@@ -169,14 +164,12 @@ export function useTweenNumber(target: number) {
   return ref;
 }
 
-/* ── tiny mono label ─────────────────────────────────── */
 export function Mono({ children, className = '' }: { children: ReactNode; className?: string }) {
   return (
     <span className={`font-mono text-[10px] tracking-[0.25em] uppercase ${className}`}>{children}</span>
   );
 }
 
-/* ── flying image (fly-to-cart) ──────────────────────── */
 function makeClone(src: string, from: DOMRect) {
   const img = document.createElement('img');
   img.src = src;
@@ -191,7 +184,6 @@ function makeClone(src: string, from: DOMRect) {
 
 const docTop = (el: Element) => el.getBoundingClientRect().top + window.scrollY;
 
-/** Fly an image while the page scrolls to #build; lands on targetSel, settles, fades. */
 export function flyWithScrollTo(src: string, from: DOMRect, targetSel: string, scroll: () => void) {
   const target = document.querySelector(targetSel);
   const buildEl = document.getElementById('build');
@@ -200,7 +192,7 @@ export function flyWithScrollTo(src: string, from: DOMRect, targetSel: string, s
     return;
   }
   const img = makeClone(src, from);
-  // predicted viewport rect of the target once lenis finishes (build top lands at y=52)
+
   const finalScroll = docTop(buildEl) - 52;
   const tr = target.getBoundingClientRect();
   const toRect = { left: tr.left, top: docTop(target) - finalScroll, width: tr.width, height: tr.height };
@@ -229,13 +221,12 @@ export function flyWithScrollTo(src: string, from: DOMRect, targetSel: string, s
   });
 }
 
-/** Fly an image to a (possibly not-yet-mounted) target, then fade out there. */
 export function flyToElement(
   src: string,
   from: DOMRect,
   getTarget: () => Element | null,
   delay = 0.09,
-  duration = 0.65,
+  duration = 0.7,
 ) {
   const img = makeClone(src, from);
   gsap.delayedCall(delay, () => {
@@ -246,10 +237,8 @@ export function flyToElement(
     }
     const r = t.getBoundingClientRect();
     gsap.to(img, {
-      left: r.left + r.width * 0.06,
-      top: r.top - 2,
-      width: r.width * 0.88,
-      height: Math.max(r.height, 22),
+      left: r.left + r.width / 2 - from.width / 2,
+      top: r.top + r.height / 2 - from.height / 2,
       duration,
       ease: 'power2.inOut',
       onComplete: () => {

@@ -53,18 +53,14 @@ export default function Sear() {
         <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/20 to-black/40" />
         <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black/80 to-transparent" />
 
-        <div className="relative h-full max-w-[1300px] mx-auto px-5 md:px-10 flex flex-col">
-          {/* head */}
-          <div className="pt-24 md:pt-28">
+        <div className="relative h-full max-w-[1300px] mx-auto px-5 md:px-10 flex flex-col">          <div className="pt-24 md:pt-28">
             <p className="font-mono text-[9px] tracking-[0.35em] text-gold/80">PROCESS // FLAT-TOP STEEL SEAR</p>
             <h2 className="mt-2 font-disp font-semibold uppercase tracking-[0.04em] text-[clamp(1.6rem,4vw,2.6rem)] text-ink">
               <span className="text-gold">//</span> 04. THE SEAR
             </h2>
           </div>
 
-          <div className="flex-1 flex items-center justify-between gap-8">
-            {/* left copy */}
-            <div className="max-w-xl">
+          <div className="flex-1 flex items-center justify-between gap-8">            <div className="max-w-xl">
               <p className="font-mono text-[9px] tracking-[0.35em] text-mut mb-4">HELD COLD</p>
               <h3 className="font-disp font-semibold uppercase leading-[0.95] text-[clamp(3rem,8.5vw,7rem)] text-ink">
                 THE
@@ -76,10 +72,7 @@ export default function Sear() {
               <p className="mt-6 max-w-sm text-[12px] leading-relaxed text-mut">
                 Fresh-ground, hand-balled, ordered. No steam, no squeeze until it hits the steel. The beef waits.
               </p>
-            </div>
-
-            {/* right heat counter */}
-            <div className="flex items-end gap-6 md:gap-10">
+            </div>            <div className="flex items-end gap-6 md:gap-10">
               <div className="text-right">
                 <span ref={countRef} className="font-digi glow-gold text-[clamp(6rem,16vw,13rem)] leading-none">0</span>
                 <span className="font-digi glow-gold text-[clamp(1.6rem,4vw,3rem)] align-top">°C</span>

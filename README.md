@@ -1,43 +1,41 @@
-# SMASH — VISUALLY SEARED
+# SMASH
 
-A scroll-driven, cinematic one-pager for a fictional smash-burger brand. Dark HUD aesthetic, amber glow, mono type, GSAP-scrubbed sections — rebuilt to match the reference design video frame by frame.
+smash burger site for the client
 
-## Sections (in scroll order)
+the whole page is one scroll. dark kitchen look, gold hud type, sections come in as you go
 
-| # | Section | Effect |
-|---|---------|--------|
-| 00 | **THE SEAR (hero)** | Burger photo + camera-HUD chrome (REC, fps, corner brackets, scrub ruler). Swap `images/hero-05.jpg` for the scroll video when delivered. |
-| 01 | **THE LINE-UP** | 3 build cards, staggered reveal, `+ ADD TO ORDER` jumps into the builder with that burger preselected. |
-| 02 | **BUILD YOUR SMASH** | Live configurator — patty upgrade, toppings, glowing live total, receipt lines. |
-| 03 | **OVERVIEW** | Glowing digital counters (102G / 7S / 196° / 1) counting up on entry. |
-| 04 | **THE SEAR** | Pinned 300vh scroll-scrub: "THE BEEF WAITS", heat counter 0→230°C, flames rise with scroll. |
-| 05 | **THE CRAFT** | Mosaic ingredient grid with clip-path reveals. |
-| 06 | **THE CUT** | Pinned horizontal-scroll ingredient cards with progress hairline. |
-| 07 | **THE STORY** | "From Hamburg to the griddle" — archival-style story cards. |
-| 08 | **RESERVE** | Booking panel: live calendar, lunch/dinner slots, party-size stepper, confirmation state. |
+what is in there
 
-## Stack
+00 hero. camera hud frame with the burger still. the scroll video goes here when they send it
+01 the line up. three builds with prices. add to order throws the burger into the builder
+02 build your smash. pick patty and toppings. the photo flies to the cart and the total glows
+03 overview. the numbers count up
+04 the sear. pinned while the heat goes 0 to 230 and the fire comes up
+05 the craft. photo grid
+06 the cut. sideways scroll cards
+07 the story. hamburg to the griddle
+08 reserve. calendar, time slots, party size
 
-- React 19 + TypeScript, Vite 8, Tailwind CSS 4
-- GSAP + ScrollTrigger (pins, scrubs, counters, reveals)
-- Lenis smooth scrolling
-- Type: Oswald (display) · Inter (body) · IBM Plex Mono (HUD) · Iceland (digital digits)
+stack
 
-## Running locally
+react + typescript
+vite
+tailwind css
+gsap + scrolltrigger
+lenis
 
-```bash
+run it
+
 npm install
-npm run dev        # http://localhost:5173
-npm run build      # type-check + production build
-```
+npm run dev
 
-## GitHub Pages
+ship it
 
-A static build lives in `docs/` (built with `--base=/smash/`).
-To publish at `https://navaira-y.github.io/smash/`:
-**Settings → Pages → Deploy from a branch → branch `arena/01a03290-smash`, folder `/docs`.**
-(Enabling Pages requires repo-admin rights this session's token doesn't have.)
+npm run build
 
-## Notes
+the docs folder has the static build for pages
 
-Portfolio project, not a real business. All branding fictional.
+notes
+
+burger.mp4 at the root is the reference video
+fonts come from google: oswald, inter, ibm plex mono, iceland
