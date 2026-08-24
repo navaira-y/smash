@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://navaira-y.github.io/smash/sitemap.xml
