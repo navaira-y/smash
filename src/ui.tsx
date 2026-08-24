@@ -183,6 +183,19 @@ export function Mono({
   );
 }
 
+export const FRAME_COUNT = 60;
+let frameImgs: HTMLImageElement[] | null = null;
+export function getFrames() {
+  if (!frameImgs) {
+    frameImgs = Array.from({ length: FRAME_COUNT }, (_, i) => {
+      const im = new Image();
+      im.src = `videos/frames/f${String(i).padStart(2, '0')}.jpg`;
+      return im;
+    });
+  }
+  return frameImgs;
+}
+
 function makeClone(src: string, from: DOMRect) {
   const img = document.createElement("img");
   img.src = src;

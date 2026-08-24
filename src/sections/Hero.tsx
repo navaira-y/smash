@@ -1,9 +1,7 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { scrollToId } from '../ui';
-
-const FRAMES = 60;
+import { FRAME_COUNT, getFrames, scrollToId } from '../ui';
 
 export default function Hero() {
   const ref = useRef<HTMLElement>(null);
@@ -18,18 +16,13 @@ export default function Hero() {
     canvas.width = 1280;
     canvas.height = 720;
 
-    const imgs = Array.from({ length: FRAMES }, (_, i) => {
-      const im = new Image();
-      im.src = `videos/frames/f${String(i).padStart(2, '0')}.jpg`;
-      return im;
-    });
+    const imgs = getFrames();
 
     let ready = false;
     imgs[0].addEventListener('load', () => {
       ready = true;
       ctx.drawImage(imgs[0], 0, 0);
       gsap.to(canvas, { opacity: 1, duration: 0.7 });
-      gsap.to(el.querySelector('.hero-poster'), { opacity: 0, duration: 0.7 });
     });
 
     let target = 0;
@@ -38,7 +31,7 @@ export default function Hero() {
     let raf = 0;
     const tick = () => {
       cur += (target - cur) * 0.16;
-      const idx = Math.min(FRAMES - 1, Math.max(0, Math.round(cur * (FRAMES - 1))));
+      const idx = Math.min(FRAME_COUNT - 1, Math.max(0, Math.round(cur * (FRAME_COUNT - 1))));
       if (ready && idx !== lastIdx && imgs[idx].complete && imgs[idx].naturalWidth > 0) {
         ctx.drawImage(imgs[idx], 0, 0);
         lastIdx = idx;
@@ -80,11 +73,6 @@ export default function Hero() {
   return (
     <section id="top" ref={ref} className="relative h-[320vh]">
       <div className="sticky top-0 h-screen overflow-hidden bg-black">
-        <img
-          src="images/hero-05.jpg"
-          alt="The Smash, double patty with melted american on a dark plate"
-          className="hero-poster absolute inset-0 w-full h-full object-cover"
-        />
         <canvas ref={canvasRef} className="absolute inset-0 w-full h-full object-cover opacity-0" />
         <div className="absolute inset-0 bg-gradient-to-t from-bg via-transparent to-black/50" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-black/30" />

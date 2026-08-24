@@ -163,5 +163,72 @@ html.lenis, html.lenis body { height: auto; }
   -webkit-text-stroke: 1px rgba(232, 182, 76, 0.9);
 }
 
+/* ── loader fire ─────────────────────────────────────── */
+.fire {
+  position: relative;
+  width: 140px;
+  height: 160px;
+  filter: drop-shadow(0 0 34px rgba(255, 122, 28, 0.5));
+}
+.flame {
+  position: absolute;
+  left: 50%;
+  bottom: 8px;
+  border-radius: 0 50% 50% 50%;
+  transform: rotate(45deg);
+  animation: flick 0.7s infinite alternate ease-in-out;
+}
+.flame.f1 {
+  width: 86px;
+  height: 86px;
+  margin-left: -43px;
+  background: #ff7a1c;
+  filter: blur(10px);
+  opacity: 0.85;
+  animation-duration: 0.8s;
+}
+.flame.f2 {
+  width: 58px;
+  height: 58px;
+  margin-left: -29px;
+  bottom: 12px;
+  background: #e8b64c;
+  filter: blur(6px);
+  animation-duration: 0.6s;
+  animation-delay: 0.1s;
+}
+.flame.f3 {
+  width: 30px;
+  height: 30px;
+  margin-left: -15px;
+  bottom: 16px;
+  background: #fff3c4;
+  filter: blur(3px);
+  animation-duration: 0.45s;
+  animation-delay: 0.05s;
+}
+@keyframes flick {
+  from { transform: rotate(45deg) scale(1, 1); }
+  to { transform: rotate(47deg) scale(0.9, 1.14); }
+}
+.ember {
+  position: absolute;
+  bottom: 46px;
+  width: 4px;
+  height: 4px;
+  border-radius: 9999px;
+  background: #ffd257;
+  opacity: 0;
+  animation: ember 1.4s infinite;
+}
+.ember.e1 { left: 42%; }
+.ember.e2 { left: 56%; animation-delay: 0.5s; }
+.ember.e3 { left: 49%; animation-delay: 0.9s; }
+@keyframes ember {
+  0% { transform: translateY(0); opacity: 0; }
+  20% { opacity: 1; }
+  100% { transform: translateY(-96px); opacity: 0; }
+}
+
 input, button { font-family: inherit; }
 input:focus { outline: 1px solid rgba(232, 182, 76, 0.6); outline-offset: 2px; }

@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
-import { flyWithScrollTo, lenis, setLenis } from "./ui";
+import { flyWithScrollTo, getFrames, lenis, setLenis } from "./ui";
+import Loader from "./Loader";
 import Nav from "./sections/Nav";
 import Hero from "./sections/Hero";
 import LineUp from "./sections/LineUp";
@@ -23,6 +24,45 @@ export default function App() {
     patty: 0,
     tops: [],
   });
+  const [phase, setPhase] = useState<"load" | "hide" | "done">("load");
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const imgs = getFrames();
+    let loaded = 0;
+    let finished = false;
+    const finish = () => {
+      if (finished) return;
+      finished = true;
+      setProgress(1);
+      setPhase("hide");
+      setTimeout(() => setPhase("done"), 750);
+    };
+    const bump = () => {
+      loaded += 1;
+      setProgress(loaded / imgs.length);
+      if (loaded >= imgs.length) setTimeout(finish, 350);
+    };
+    imgs.forEach((im) => {
+      if (im.complete && im.naturalWidth > 0) bump();
+      else {
+        im.addEventListener("load", bump, { once: true });
+        im.addEventListener("error", bump, { once: true });
+      }
+    });
+    const t = setTimeout(finish, 15000);
+    return () => clearTimeout(t);
+  }, []);
+
+  useEffect(() => {
+    const locked = phase !== "done";
+    document.body.style.overflow = locked ? "hidden" : "";
+    if (locked) lenis?.stop();
+    else {
+      lenis?.start();
+      ScrollTrigger.refresh();
+    }
+  }, [phase]);
 
   const handleOrder = (id: string, img: HTMLImageElement) => {
     setBuild((b) => ({ ...b, burger: id }));
@@ -62,6 +102,7 @@ export default function App() {
 
   return (
     <div className="bg-bg text-ink">
+      {phase !== "done" && <Loader progress={progress} hiding={phase === "hide"} />}
       <Nav />
       <main>
         <Hero />
