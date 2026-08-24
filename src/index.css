@@ -130,6 +130,34 @@ html.lenis, html.lenis body { height: auto; }
 }
 .kenburns { animation: kenburns 2.6s cubic-bezier(0.22, 1, 0.36, 1) both; }
 
+/* ── patty-size letter flash (S / M / L) ─────────────── */
+.letter-flash {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  display: grid;
+  place-items: center;
+  font-size: clamp(6rem, 14vw, 11rem);
+  font-weight: 600;
+  pointer-events: none;
+  animation: letterflash 1s ease-out forwards;
+}
+@keyframes letterflash {
+  0% { opacity: 0; transform: scale(0.4); filter: blur(10px); }
+  25% { opacity: 1; transform: scale(1); filter: blur(0); }
+  65% { opacity: 1; transform: scale(1.04); }
+  100% { opacity: 0; transform: scale(1.18); filter: blur(6px); }
+}
+
+/* ── receipt line writing itself in ──────────────────── */
+.write-in {
+  animation: writein 0.6s 0.12s both;
+}
+@keyframes writein {
+  from { clip-path: inset(0 100% 0 0); opacity: 0.4; }
+  to { clip-path: inset(0 0 0 0); opacity: 1; }
+}
+
 .outline-text {
   color: transparent;
   -webkit-text-stroke: 1px rgba(236, 229, 216, 0.85);

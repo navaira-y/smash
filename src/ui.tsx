@@ -175,3 +175,86 @@ export function Mono({ children, className = '' }: { children: ReactNode; classN
     <span className={`font-mono text-[10px] tracking-[0.25em] uppercase ${className}`}>{children}</span>
   );
 }
+
+/* ── flying image (fly-to-cart) ──────────────────────── */
+function makeClone(src: string, from: DOMRect) {
+  const img = document.createElement('img');
+  img.src = src;
+  img.alt = '';
+  img.style.cssText =
+    `position:fixed;left:${from.left}px;top:${from.top}px;width:${from.width}px;height:${from.height}px;` +
+    'object-fit:cover;z-index:90;pointer-events:none;border-radius:3px;' +
+    'box-shadow:0 12px 44px rgba(0,0,0,0.65), 0 0 24px rgba(232,182,76,0.25);';
+  document.body.appendChild(img);
+  return img;
+}
+
+const docTop = (el: Element) => el.getBoundingClientRect().top + window.scrollY;
+
+/** Fly an image while the page scrolls to #build; lands on targetSel, settles, fades. */
+export function flyWithScrollTo(src: string, from: DOMRect, targetSel: string, scroll: () => void) {
+  const target = document.querySelector(targetSel);
+  const buildEl = document.getElementById('build');
+  if (!target || !buildEl) {
+    scroll();
+    return;
+  }
+  const img = makeClone(src, from);
+  // predicted viewport rect of the target once lenis finishes (build top lands at y=52)
+  const finalScroll = docTop(buildEl) - 52;
+  const tr = target.getBoundingClientRect();
+  const toRect = { left: tr.left, top: docTop(target) - finalScroll, width: tr.width, height: tr.height };
+  scroll();
+  gsap.to(img, {
+    left: toRect.left,
+    top: toRect.top,
+    width: toRect.width,
+    height: toRect.height,
+    duration: 1.1,
+    ease: 'power2.out',
+    onComplete: () => {
+      const r = target.getBoundingClientRect();
+      gsap.to(img, {
+        left: r.left,
+        top: r.top,
+        width: r.width,
+        height: r.height,
+        duration: 0.18,
+        ease: 'power2.out',
+        onComplete: () => {
+          gsap.to(img, { opacity: 0, scale: 0.94, duration: 0.35, onComplete: () => img.remove() });
+        },
+      });
+    },
+  });
+}
+
+/** Fly an image to a (possibly not-yet-mounted) target, then fade out there. */
+export function flyToElement(
+  src: string,
+  from: DOMRect,
+  getTarget: () => Element | null,
+  delay = 0.09,
+  duration = 0.65,
+) {
+  const img = makeClone(src, from);
+  gsap.delayedCall(delay, () => {
+    const t = getTarget();
+    if (!t) {
+      img.remove();
+      return;
+    }
+    const r = t.getBoundingClientRect();
+    gsap.to(img, {
+      left: r.left + r.width * 0.06,
+      top: r.top - 2,
+      width: r.width * 0.88,
+      height: Math.max(r.height, 22),
+      duration,
+      ease: 'power2.inOut',
+      onComplete: () => {
+        gsap.to(img, { opacity: 0, duration: 0.3, onComplete: () => img.remove() });
+      },
+    });
+  });
+}

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
-import { setLenis } from './ui';
+import { flyWithScrollTo, lenis, setLenis } from './ui';
 import Nav from './sections/Nav';
 import Hero from './sections/Hero';
 import LineUp from './sections/LineUp';
@@ -19,6 +19,20 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function App() {
   const [build, setBuild] = useState<BuildState>({ burger: 'smoke', patty: 0, tops: [] });
+
+  const handleOrder = (id: string, img: HTMLImageElement) => {
+    setBuild((b) => ({ ...b, burger: id }));
+    const buildEl = document.getElementById('build');
+    flyWithScrollTo(img.src, img.getBoundingClientRect(), '[data-preview-box]', () => {
+      if (buildEl && lenis) {
+        lenis.scrollTo(buildEl, {
+          offset: -52,
+          duration: 1.1,
+          easing: (t: number) => 1 - Math.pow(1 - t, 3),
+        });
+      }
+    });
+  };
 
   useEffect(() => {
     const lenis = new Lenis({ lerp: 0.1 });
@@ -42,7 +56,7 @@ export default function App() {
       <Nav />
       <main>
         <Hero />
-        <LineUp onOrder={(id) => setBuild((b) => ({ ...b, burger: id }))} />
+        <LineUp onOrder={handleOrder} />
         <Build state={build} onChange={setBuild} />
         <Overview />
         <Sear />

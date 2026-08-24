@@ -1,9 +1,9 @@
 import gsap from 'gsap';
 import { useEffect, useRef } from 'react';
 import { BURGERS } from '../data';
-import { Reveal, SectionHead, scrollToId } from '../ui';
+import { Reveal, SectionHead } from '../ui';
 
-export default function LineUp({ onOrder }: { onOrder: (id: string) => void }) {
+export default function LineUp({ onOrder }: { onOrder: (id: string, img: HTMLImageElement) => void }) {
   const gridRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -66,9 +66,9 @@ export default function LineUp({ onOrder }: { onOrder: (id: string) => void }) {
                 </div>
 
                 <button
-                  onClick={() => {
-                    onOrder(b.id);
-                    scrollToId('build');
+                  onClick={(e) => {
+                    const img = e.currentTarget.closest('article')?.querySelector('img');
+                    if (img) onOrder(b.id, img);
                   }}
                   className="mt-5 w-full h-11 border border-gold/40 text-gold font-mono text-[10px] tracking-[0.25em] uppercase hover:bg-gold hover:text-bg hover:shadow-[0_0_24px_rgba(232,182,76,0.35)] transition-all duration-300"
                 >

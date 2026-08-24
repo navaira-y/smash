@@ -1,5 +1,6 @@
+import { useState } from 'react';
 import { BURGERS, PATTIES, TOPPINGS } from '../data';
-import { Reveal, SectionHead, scrollToId, useTweenNumber } from '../ui';
+import { Reveal, SectionHead, scrollToId, useTweenNumber, flyToElement } from '../ui';
 
 export interface BuildState {
   burger: string;
@@ -20,6 +21,8 @@ export default function Build({
     PATTIES[state.patty].extra +
     state.tops.reduce((a, i) => a + TOPPINGS[i].extra, 0);
   const totalRef = useTweenNumber(total);
+  const [flash, setFlash] = useState<{ l: string; k: number } | null>(null);
+  const [lastAdded, setLastAdded] = useState<number | null>(null);
 
   const toggleTop = (i: number) => {
     const has = state.tops.includes(i);
@@ -50,7 +53,10 @@ export default function Build({
                 {PATTIES.map((p, i) => (
                   <button
                     key={p.name}
-                    onClick={() => onChange({ ...state, patty: i })}
+                    onClick={() => {
+                      onChange({ ...state, patty: i });
+                      setFlash({ l: p.size, k: Date.now() });
+                    }}
                     className={`relative p-3 text-left border transition-all duration-300 ${
                       state.patty === i
                         ? 'border-gold bg-panel2 shadow-[0_0_24px_rgba(232,182,76,0.15)]'
@@ -75,14 +81,29 @@ export default function Build({
                   return (
                     <button
                       key={t.name}
-                      onClick={() => toggleTop(i)}
+                      onClick={(e) => {
+                        if (!on) {
+                          const thumb = e.currentTarget.querySelector('img');
+                          if (thumb) {
+                            flyToElement(
+                              thumb.src,
+                              thumb.getBoundingClientRect(),
+                              () => document.querySelector(`[data-receipt-row="${i}"]`),
+                            );
+                          }
+                          setLastAdded(i);
+                        }
+                        toggleTop(i);
+                      }}
                       className={`flex items-center gap-3 p-2.5 border transition-all duration-300 ${
                         on
                           ? 'border-gold bg-panel2 shadow-[0_0_24px_rgba(232,182,76,0.18)]'
                           : 'border-line bg-panel hover:border-line2'
                       }`}
                     >
-                      <img src={t.icon} alt="" className="w-10 h-10 object-cover" />
+                      <span className="w-14 h-10 shrink-0 bg-black/70 border border-line overflow-hidden grid place-items-center">
+                        <img src={t.icon} alt="" className="w-full h-full object-contain p-1" />
+                      </span>
                       <span className="text-left">
                         <span className="block font-mono text-[9px] tracking-[0.15em] text-ink">{t.name}</span>
                         <span className="block font-mono text-[9px] tracking-[0.15em] text-gold mt-0.5">
@@ -99,7 +120,12 @@ export default function Build({
           {/* ── right: preview + receipt ── */}
           <Reveal className="lg:col-span-7" delay={0.1}>
             <div className="border border-line bg-panel h-full flex flex-col">
-              <div className="relative h-[300px] md:h-[380px] overflow-hidden bg-black">
+              <div data-preview-box className="relative h-[300px] md:h-[380px] overflow-hidden bg-black">
+                {flash && (
+                  <span key={flash.k} className="letter-flash font-disp glow-gold">
+                    {flash.l}
+                  </span>
+                )}
                 {BURGERS.map((b) => (
                   <img
                     key={b.id}
@@ -136,7 +162,11 @@ export default function Build({
                   </div>
                 )}
                 {state.tops.map((i) => (
-                  <div key={i} className="flex justify-between py-2 border-b border-line/70 text-mut">
+                  <div
+                    key={i}
+                    data-receipt-row={i}
+                    className={`flex justify-between py-2 border-b border-line/70 text-mut ${lastAdded === i ? 'write-in' : ''}`}
+                  >
                     <span>{TOPPINGS[i].name}</span>
                     <span className="text-ink">{TOPPINGS[i].extra === 0 ? 'FREE' : `+$${TOPPINGS[i].extra}`}</span>
                   </div>
