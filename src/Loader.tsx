@@ -7,7 +7,15 @@ export default function Loader({ progress, hiding }: { progress: number; hiding:
       }`}
     >
       <div className="fire">
-        <img src="videos/fire.svg" alt="" className="fire-img" />
+        <span className="flame f0" />
+        <span className="flame f1" />
+        <span className="flame f2" />
+        <span className="flame f3" />
+        <span className="ember e1" />
+        <span className="ember e2" />
+        <span className="ember e3" />
+        <span className="ember e4" />
+        <span className="ember e5" />
       </div>
 
       <div className="w-[240px] md:w-[300px]">
