@@ -1,12 +1,19 @@
-import { STORY_CARDS } from '../data';
-import { Reveal, SectionHead } from '../ui';
+import { STORY_CARDS } from "../data";
+import { Reveal, SectionHead } from "../ui";
 
 export default function Story() {
   return (
-    <section id="story" className="relative py-24 md:py-32 border-t border-line bg-bg2">
+    <section
+      id="story"
+      className="relative py-24 md:py-32 border-t border-line bg-bg2"
+    >
       <div className="max-w-[1100px] mx-auto px-5 md:px-10">
         <Reveal>
-          <SectionHead index="07" title="THE STORY" meta="TWO CENTURIES · ONE PATTY" />
+          <SectionHead
+            index="07"
+            title="THE STORY"
+            meta="TWO CENTURIES · ONE PATTY"
+          />
         </Reveal>
 
         <Reveal className="text-center mb-14 md:mb-20">
@@ -16,16 +23,21 @@ export default function Story() {
           <div className="mt-8 flex items-center justify-center gap-6 md:gap-10">
             <span className="text-center">
               <span className="block text-2xl">🇩🇪</span>
-              <span className="block mt-2 font-mono text-[8px] tracking-[0.3em] text-mut">1880s · GERMANY</span>
+              <span className="block mt-2 font-mono text-[8px] tracking-[0.3em] text-mut">
+                1880s · GERMANY
+              </span>
             </span>
             <span className="text-gold text-xl">→</span>
             <span className="text-center">
               <span className="block text-2xl">🇺🇸</span>
-              <span className="block mt-2 font-mono text-[8px] tracking-[0.3em] text-mut">TODAY · EST. 2023</span>
+              <span className="block mt-2 font-mono text-[8px] tracking-[0.3em] text-mut">
+                TODAY · EST. 2023
+              </span>
             </span>
           </div>
           <p className="mt-8 max-w-md mx-auto text-[12px] leading-relaxed text-mut">
-            Born in Hamburg, 1880. A German steak met an American bun, then a modern craft — one patty, perfected across two centuries.
+            Born in Hamburg, 1880. A German steak met an American bun, then a
+            modern craft — one patty, perfected across two centuries.
           </p>
         </Reveal>
 
@@ -45,8 +57,12 @@ export default function Story() {
                   </span>
                 </div>
                 <div className="p-5">
-                  <h4 className="font-disp font-medium tracking-[0.04em] text-lg text-ink">{c.title}</h4>
-                  <p className="mt-2 text-[11px] leading-relaxed text-mut">{c.desc}</p>
+                  <h4 className="font-disp font-medium tracking-[0.04em] text-lg text-ink">
+                    {c.title}
+                  </h4>
+                  <p className="mt-2 text-[11px] leading-relaxed text-mut">
+                    {c.desc}
+                  </p>
                 </div>
               </article>
             </Reveal>

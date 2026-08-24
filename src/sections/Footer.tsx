@@ -1,4 +1,4 @@
-import { lenis } from '../ui';
+import { lenis } from "../ui";
 
 export default function Footer() {
   return (
@@ -8,7 +8,10 @@ export default function Footer() {
           {Array.from({ length: 2 }).map((_, k) => (
             <span key={k} className="flex gap-10">
               {Array.from({ length: 8 }).map((_, i) => (
-                <span key={i} className="font-disp uppercase tracking-[0.1em] text-lg text-gold/80">
+                <span
+                  key={i}
+                  className="font-disp uppercase tracking-[0.1em] text-lg text-gold/80"
+                >
                   PRESS. SEAR. SERVE. <span className="text-dim mx-2">//</span>
                 </span>
               ))}
@@ -19,8 +22,12 @@ export default function Footer() {
 
       <div className="max-w-[1200px] mx-auto px-5 md:px-10 py-10 flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="text-center md:text-left">
-          <span className="font-disp font-semibold tracking-[0.14em] text-ink">SMASH</span>
-          <span className="block font-mono text-[8px] tracking-[0.4em] text-mut mt-1">VISUALLY SEARED</span>
+          <span className="font-disp font-semibold tracking-[0.14em] text-ink">
+            SMASH
+          </span>
+          <span className="block font-mono text-[8px] tracking-[0.4em] text-mut mt-1">
+            VISUALLY SEARED
+          </span>
         </div>
         <p className="font-mono text-[9px] tracking-[0.25em] text-dim text-center">
           © 2026 SMASH · A FICTIONAL BRAND · PRESS. SEAR. SERVE.
