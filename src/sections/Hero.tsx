@@ -1,128 +1,140 @@
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { scrollToId } from "../ui";
+import { useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { scrollToId } from '../ui';
 
 export default function Hero() {
   const ref = useRef<HTMLElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     const el = ref.current;
-    if (!el) return;
-    const img = el.querySelector(".hero-img");
-    const content = el.querySelector(".hero-copy");
+    const video = videoRef.current;
+    if (!el || !video) return;
 
-    const tl = gsap.timeline({ delay: 0.15 });
-    tl.fromTo(
-      img,
-      { scale: 1.18, opacity: 0 },
-      { scale: 1.06, opacity: 1, duration: 2, ease: "power3.out" },
-    )
-      .fromTo(
-        ".hero-k1",
-        { y: 30, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.8, ease: "power3.out" },
-        "-=1.2",
-      )
-      .fromTo(
-        ".hero-k2",
-        { y: 30, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.8, ease: "power3.out" },
-        "-=0.6",
-      )
-      .fromTo(
-        ".hero-rule",
-        { scaleX: 0 },
-        { scaleX: 1, duration: 0.7, ease: "power3.out" },
-        "-=0.5",
-      )
-      .fromTo(
-        ".hero-hud",
-        { opacity: 0 },
-        { opacity: 1, duration: 1 },
-        "-=0.4",
-      );
+    let dur = 0;
+    let target = 0;
+    let cur = 0;
+    let raf = 0;
 
+    const onMeta = () => {
+      dur = video.duration || 0;
+      gsap.to(video, { opacity: 1, duration: 0.8 });
+      gsap.to(el.querySelector('.hero-poster'), { opacity: 0, duration: 0.8 });
+    };
+    video.addEventListener('loadedmetadata', onMeta);
+
+    const tick = () => {
+      cur += (target - cur) * 0.14;
+      if (dur > 0 && Math.abs(video.currentTime - cur) > 0.001) {
+        try {
+          video.currentTime = cur;
+        } catch {
+          /* seeking before ready */
+        }
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+
+    const copy = el.querySelector('.hero-copy');
+    const dot = el.querySelector('.hero-dot');
     const st = ScrollTrigger.create({
       trigger: el,
-      start: "top top",
-      end: "bottom top",
-      scrub: true,
+      start: 'top top',
+      end: 'bottom bottom',
       onUpdate: (self) => {
         const p = self.progress;
-        gsap.set(img, { yPercent: p * 14, scale: 1.06 + p * 0.08 });
-        gsap.set(content, { yPercent: p * -18, opacity: 1 - p * 1.1 });
+        target = p * (dur || 0);
+        if (copy) {
+          const o = Math.max(0, 1 - p * 3.2);
+          (copy as HTMLElement).style.opacity = String(o);
+          (copy as HTMLElement).style.transform = `translateY(${p * -120}px)`;
+        }
+        if (dot) (dot as HTMLElement).style.left = `${p * 100}%`;
       },
     });
 
+    const tl = gsap.timeline({ delay: 0.15 });
+    tl.fromTo('.hero-k1', { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' })
+      .fromTo('.hero-k2', { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' }, '-=0.6')
+      .fromTo('.hero-rule', { scaleX: 0 }, { scaleX: 1, duration: 0.7, ease: 'power3.out' }, '-=0.5')
+      .fromTo('.hero-hud', { opacity: 0 }, { opacity: 1, duration: 1 }, '-=0.4');
+
     return () => {
-      tl.kill();
+      video.removeEventListener('loadedmetadata', onMeta);
+      cancelAnimationFrame(raf);
       st.kill();
+      tl.kill();
     };
   }, []);
 
   return (
-    <section
-      id="top"
-      ref={ref}
-      className="relative h-[100svh] min-h-[560px] overflow-hidden bg-black"
-    >
-      <img
-        src="images/hero-05.jpg"
-        alt="The Smash, double patty with melted american on a dark plate"
-        className="hero-img absolute inset-0 w-full h-full object-cover opacity-0"
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/30 to-black/60" />
-      <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-transparent to-black/40" />
+    <section id="top" ref={ref} className="relative h-[320vh]">
+      <div className="sticky top-0 h-screen overflow-hidden bg-black">
+        <img
+          src="images/hero-05.jpg"
+          alt="The Smash, double patty with melted american on a dark plate"
+          className="hero-poster absolute inset-0 w-full h-full object-cover"
+        />
+        <video
+          ref={videoRef}
+          src="videos/The_burger_needs_to_bounce_onc.mp4"
+          muted
+          playsInline
+          preload="auto"
+          className="absolute inset-0 w-full h-full object-cover opacity-0"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-bg via-transparent to-black/50" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-black/30" />
 
-      <div className="hero-hud absolute inset-0 opacity-0 pointer-events-none">
-        <div className="hud-corners absolute inset-3 md:inset-6">
-          <span className="hc" />
-        </div>
-
-        <div className="absolute left-6 md:left-10 top-1/2 -translate-y-1/2 hidden md:flex flex-col items-start gap-10">
-          <span className="font-mono text-[9px] tracking-[0.3em] text-ink/50 [writing-mode:vertical-rl] rotate-180">
-            GRIND // 80:20 CHUCK BLEND
-          </span>
-        </div>
-        <div className="absolute right-6 md:right-10 top-1/2 -translate-y-1/2 hidden md:block">
-          <span className="font-mono text-[9px] tracking-[0.3em] text-ink/50 [writing-mode:vertical-rl] rotate-180">
-            FRESH GROUND · PRESS · SEAR
-          </span>
-        </div>
-
-        <div className="absolute left-0 right-0 bottom-0">
-          <div className="flex items-center justify-between px-6 md:px-10 pb-2 font-mono text-[9px] tracking-[0.25em] text-ink/60">
-            <span># 00 · THE SEAR</span>
-            <span className="hidden md:inline">SCRUB CLIP ▸ SCROLL</span>
+        <div className="hero-hud absolute inset-0 opacity-0 pointer-events-none">
+          <div className="hud-corners absolute inset-3 md:inset-6">
+            <span className="hc" />
           </div>
-          <div className="ruler-lg h-6 mx-3 md:mx-6 mb-3 relative">
-            <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[9px] h-[9px] rounded-full bg-gold shadow-[0_0_12px_rgba(232,182,76,0.9)]" />
+
+          <div className="absolute left-6 md:left-10 top-1/2 -translate-y-1/2 hidden md:flex flex-col items-start gap-10">
+            <span className="font-mono text-[9px] tracking-[0.3em] text-ink/50 [writing-mode:vertical-rl] rotate-180">
+              GRIND // 80:20 CHUCK BLEND
+            </span>
+          </div>
+          <div className="absolute right-6 md:right-10 top-1/2 -translate-y-1/2 hidden md:block">
+            <span className="font-mono text-[9px] tracking-[0.3em] text-ink/50 [writing-mode:vertical-rl] rotate-180">
+              FRESH GROUND · PRESS · SEAR
+            </span>
+          </div>
+
+          <div className="absolute left-0 right-0 bottom-0">
+            <div className="flex items-center justify-between px-6 md:px-10 pb-2 font-mono text-[9px] tracking-[0.25em] text-ink/60">
+              <span># 00 · THE SEAR</span>
+              <span className="hidden md:inline">SCRUB CLIP ▸ SCROLL</span>
+            </div>
+            <div className="ruler-lg h-6 mx-3 md:mx-6 mb-3 relative">
+              <span className="hero-dot absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-[9px] h-[9px] rounded-full bg-gold shadow-[0_0_12px_rgba(232,182,76,0.9)]" style={{ left: '0%' }} />
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="hero-copy absolute left-6 md:left-16 bottom-24 md:bottom-28 z-10">
-        <p className="hero-k1 font-mono text-[10px] tracking-[0.35em] uppercase text-gold/90 mb-4 opacity-0">
-          GRIDDLE TEMP 230°C · MAILLARD ACTIVE
-        </p>
-        <h1 className="font-sans leading-[0.95] tracking-[0.02em]">
-          <span className="hero-k2 block font-medium text-[clamp(3rem,9vw,7.5rem)] text-ink opacity-0">
-            SMASH
-          </span>
-          <span className="hero-k2 block font-light text-[clamp(3rem,9vw,7.5rem)] text-mut opacity-0">
-            <span className="text-gold">//</span> THE SEAR
-          </span>
-        </h1>
-        <div className="hero-rule origin-left scale-x-0 h-px w-40 bg-gold/70 mt-6" />
-      </div>
+        <div className="hero-copy absolute left-6 md:left-16 bottom-24 md:bottom-28 z-10">
+          <p className="hero-k1 font-mono text-[10px] tracking-[0.35em] uppercase text-gold/90 mb-4 opacity-0">
+            GRIDDLE TEMP 230°C · MAILLARD ACTIVE
+          </p>
+          <h1 className="font-sans leading-[0.95] tracking-[0.02em]">
+            <span className="hero-k2 block font-medium text-[clamp(3rem,9vw,7.5rem)] text-ink opacity-0">SMASH</span>
+            <span className="hero-k2 block font-light text-[clamp(3rem,9vw,7.5rem)] text-mut opacity-0">
+              <span className="text-gold">//</span> THE SEAR
+            </span>
+          </h1>
+          <div className="hero-rule origin-left scale-x-0 h-px w-40 bg-gold/70 mt-6" />
+        </div>
 
-      <button
-        onClick={() => scrollToId("lineup")}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 font-mono text-[9px] tracking-[0.35em] text-ink/70 hover:text-gold transition-colors flicker"
-      >
-        SCROLL TO BEGIN THE SEAR ↓
-      </button>
+        <button
+          onClick={() => scrollToId('lineup')}
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 font-mono text-[9px] tracking-[0.35em] text-ink/70 hover:text-gold transition-colors flicker"
+        >
+          SCROLL TO BEGIN THE SEAR ↓
+        </button>
+      </div>
     </section>
   );
 }

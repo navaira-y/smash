@@ -6,7 +6,7 @@ the whole page is one scroll. dark kitchen look, gold hud type, sections come in
 
 what is in there
 
-00 hero. camera hud frame with the burger still. the scroll video goes here when they send it
+00 hero. the burger video plays as u scroll. the still shows until it loads
 01 the line up. three builds with prices. add to order throws the burger into the builder
 02 build your smash. pick patty and toppings. the photo flies to the cart and the total glows
 03 overview. the numbers count up
