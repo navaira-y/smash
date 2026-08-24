@@ -3,35 +3,45 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { scrollToId } from '../ui';
 
+const FRAMES = 60;
+
 export default function Hero() {
   const ref = useRef<HTMLElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const el = ref.current;
-    const video = videoRef.current;
-    if (!el || !video) return;
+    const canvas = canvasRef.current;
+    if (!el || !canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    canvas.width = 1280;
+    canvas.height = 720;
 
-    let dur = 0;
+    const imgs = Array.from({ length: FRAMES }, (_, i) => {
+      const im = new Image();
+      im.src = `videos/frames/f${String(i).padStart(2, '0')}.jpg`;
+      return im;
+    });
+
+    let ready = false;
+    imgs[0].addEventListener('load', () => {
+      ready = true;
+      ctx.drawImage(imgs[0], 0, 0);
+      gsap.to(canvas, { opacity: 1, duration: 0.7 });
+      gsap.to(el.querySelector('.hero-poster'), { opacity: 0, duration: 0.7 });
+    });
+
     let target = 0;
     let cur = 0;
+    let lastIdx = -1;
     let raf = 0;
-
-    const onMeta = () => {
-      dur = video.duration || 0;
-      gsap.to(video, { opacity: 1, duration: 0.8 });
-      gsap.to(el.querySelector('.hero-poster'), { opacity: 0, duration: 0.8 });
-    };
-    video.addEventListener('loadedmetadata', onMeta);
-
     const tick = () => {
-      cur += (target - cur) * 0.14;
-      if (dur > 0 && Math.abs(video.currentTime - cur) > 0.001) {
-        try {
-          video.currentTime = cur;
-        } catch {
-          /* seeking before ready */
-        }
+      cur += (target - cur) * 0.16;
+      const idx = Math.min(FRAMES - 1, Math.max(0, Math.round(cur * (FRAMES - 1))));
+      if (ready && idx !== lastIdx && imgs[idx].complete && imgs[idx].naturalWidth > 0) {
+        ctx.drawImage(imgs[idx], 0, 0);
+        lastIdx = idx;
       }
       raf = requestAnimationFrame(tick);
     };
@@ -45,10 +55,9 @@ export default function Hero() {
       end: 'bottom bottom',
       onUpdate: (self) => {
         const p = self.progress;
-        target = p * (dur || 0);
+        target = p;
         if (copy) {
-          const o = Math.max(0, 1 - p * 3.2);
-          (copy as HTMLElement).style.opacity = String(o);
+          (copy as HTMLElement).style.opacity = String(Math.max(0, 1 - p * 3.2));
           (copy as HTMLElement).style.transform = `translateY(${p * -120}px)`;
         }
         if (dot) (dot as HTMLElement).style.left = `${p * 100}%`;
@@ -62,7 +71,6 @@ export default function Hero() {
       .fromTo('.hero-hud', { opacity: 0 }, { opacity: 1, duration: 1 }, '-=0.4');
 
     return () => {
-      video.removeEventListener('loadedmetadata', onMeta);
       cancelAnimationFrame(raf);
       st.kill();
       tl.kill();
@@ -77,14 +85,7 @@ export default function Hero() {
           alt="The Smash, double patty with melted american on a dark plate"
           className="hero-poster absolute inset-0 w-full h-full object-cover"
         />
-        <video
-          ref={videoRef}
-          src="videos/The_burger_needs_to_bounce_onc.mp4"
-          muted
-          playsInline
-          preload="auto"
-          className="absolute inset-0 w-full h-full object-cover opacity-0"
-        />
+        <canvas ref={canvasRef} className="absolute inset-0 w-full h-full object-cover opacity-0" />
         <div className="absolute inset-0 bg-gradient-to-t from-bg via-transparent to-black/50" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-black/30" />
 
@@ -110,7 +111,10 @@ export default function Hero() {
               <span className="hidden md:inline">SCRUB CLIP ▸ SCROLL</span>
             </div>
             <div className="ruler-lg h-6 mx-3 md:mx-6 mb-3 relative">
-              <span className="hero-dot absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-[9px] h-[9px] rounded-full bg-gold shadow-[0_0_12px_rgba(232,182,76,0.9)]" style={{ left: '0%' }} />
+              <span
+                className="hero-dot absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-[9px] h-[9px] rounded-full bg-gold shadow-[0_0_12px_rgba(232,182,76,0.9)]"
+                style={{ left: '0%' }}
+              />
             </div>
           </div>
         </div>
