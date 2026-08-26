@@ -46,11 +46,14 @@ export default function LineUp({
           />
         </Reveal>
 
-        <div ref={gridRef} className="grid md:grid-cols-3 gap-5">
+        <div
+          ref={gridRef}
+          className="flex gap-5 overflow-x-auto pb-4 snap-x snap-mandatory md:grid md:grid-cols-3 md:overflow-visible md:pb-0"
+        >
           {BURGERS.map((b) => (
             <article
               key={b.id}
-              className="lu-card group bg-panel border border-line hover:border-gold/40 transition-colors duration-500 flex flex-col"
+              className="lu-card group bg-panel border border-line hover:border-gold/40 transition-colors duration-500 flex flex-col snap-start shrink-0 w-[80vw] max-w-[320px] md:w-auto md:max-w-none"
             >
               <div className="relative aspect-[4/3] overflow-hidden bg-black">
                 <img

@@ -105,7 +105,7 @@ export function SectionHead({
         <span className="text-gold">//</span> {index}. {title}
       </h2>
       {meta ? (
-        <span className="sh-meta font-mono text-[10px] tracking-[0.25em] uppercase text-mut whitespace-nowrap pb-1">
+        <span className="sh-meta font-mono text-[10px] tracking-[0.25em] uppercase text-mut text-right pb-1">
           {meta}
         </span>
       ) : null}

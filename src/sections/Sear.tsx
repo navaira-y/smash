@@ -72,7 +72,7 @@ export default function Sear() {
               <span className="text-gold">//</span> 04. THE SEAR
             </h2>
           </div>
-          <div className="flex-1 flex items-center justify-between gap-8">
+          <div className="flex-1 flex flex-col md:flex-row items-start md:items-center justify-between gap-10 md:gap-8">
             {" "}
             <div className="max-w-xl">
               <p className="font-mono text-[9px] tracking-[0.35em] text-mut mb-4">
@@ -94,7 +94,7 @@ export default function Sear() {
               <div className="text-right">
                 <span
                   ref={countRef}
-                  className="font-digi glow-gold text-[clamp(6rem,16vw,13rem)] leading-none"
+                  className="font-digi glow-gold text-[clamp(4.5rem,16vw,13rem)] leading-none"
                 >
                   0
                 </span>
