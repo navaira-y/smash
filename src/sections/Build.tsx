@@ -54,7 +54,7 @@ export default function Build({
 
         <div className="grid lg:grid-cols-12 gap-8">
           {" "}
-          <div className="lg:col-span-5 space-y-10">
+          <div className="lg:col-span-5 space-y-10 order-2 lg:order-1">
             <Reveal>
               <div className="flex items-center justify-between mb-4">
                 <span className="font-mono text-[10px] tracking-[0.3em] text-mut">
@@ -151,7 +151,7 @@ export default function Build({
               </div>
             </Reveal>
           </div>{" "}
-          <Reveal className="lg:col-span-7" delay={0.1}>
+          <Reveal className="lg:col-span-7 order-1 lg:order-2" delay={0.1}>
             <div className="border border-line bg-panel h-full flex flex-col">
               <div
                 data-preview-box
